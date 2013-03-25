@@ -1,7 +1,9 @@
-
 # enstore
 
 In-memory persistence for streams. Enables you to replay streams, even if they're not finished yet.
+
+*Need real persistence? Check out [level-store](https://github.com/juliangruber/level-store) for a fast and flexible
+streaming storage engine based on LevelDB.*
 
 ## Usage
 
