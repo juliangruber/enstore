@@ -43,7 +43,7 @@ enstore.prototype.createReadStream = function () {
   var tr = through();
   var end = tr.end.bind(tr);
   function write (chunk) {
-      tr.write(chunk.chunk);
+    tr.write(chunk.chunk);
   }
   
   setTimeout(function () {
