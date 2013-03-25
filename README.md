@@ -31,26 +31,20 @@ var http = require('http');
 var browserify = require('browserify');
 var enstore = require('enstore');
 
-function createCache () {
-  var store = enstore();
-  browserify('app.js').bundle().pipe(store.createWriteStream());
-  return store;
-}
-
-// initially fill the cache
-var cache = createCache();
+// fill the cache
+var cache = enstore();
+browserify('app.js').bundle().pipe(cache.createWriteStream());
 
 http.createServer(function (req, res) {
   if (req.url == '/bundle.js') {
     // stream the bundle to the client
     res.writeHead(200, { 'Content-Type' : 'application/javascript' });
     store.createReadStream().pipe(res);
-  } else if (req.url == '/flush-cache') {
-    // recreate the cache
-    cache = createCache();
   }
 });
 ```
+
+To recreate / flush the cache just overwrite the `cache` variable with a new `enstore` instance.
 
 ## API
 
