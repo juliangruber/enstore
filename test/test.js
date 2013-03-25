@@ -3,7 +3,7 @@ var through = require('through');
 var test = require('tap').test;
 
 test('enstore', function (t) {
-  t.plan(9);
+  t.plan(12);
 
   var store = enstore();
   read('initial');
@@ -29,8 +29,12 @@ test('enstore', function (t) {
 
   function read (name) {
     var i = 0;
-    store.createReadStream().pipe(through(function (chunk) {
-      t.equal(chunk, i++, name);
+    var rs = store.createReadStream();
+    rs.on('end', function () {
+      t.ok(true, name + ' ended');
+    });
+    rs.pipe(through(function (chunk) {
+      t.equal(chunk, i++, name + ' chunk');
     }));
   }
 });

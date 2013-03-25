@@ -50,7 +50,7 @@ enstore.prototype.createReadStream = function () {
     self.store.forEach(write);
     self.on('chunk', write);
     self.once('end', end);
-    if (self.end) tr.end();
+    if (self.ended) tr.end();
   });
 
   tr.once('end', function () {
