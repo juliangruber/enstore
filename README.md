@@ -21,6 +21,37 @@ someStream.pipe(store.createWriteStream());
 store.createWriteStream().pipe(someWhereElse);
 ```
 
+## Example: Cache for browserify
+
+This basically can be done for any streaming resource, like `fs.createReadStream()` or `request()`, that you
+want to cache in memory.
+
+```js
+var http = require('http');
+var browserify = require('browserify');
+var enstore = require('enstore');
+
+function createCache () {
+  var store = enstore();
+  browserify('app.js').bundle().pipe(store.createWriteStream());
+  return store;
+}
+
+// initially fill the cache
+var cache = createCache();
+
+http.createServer(function (req, res) {
+  if (req.url == '/bundle.js') {
+    // stream the bundle to the client
+    res.writeHead(200, { 'Content-Type' : 'application/javascript' });
+    store.createReadStream().pipe(res);
+  } else if (req.url == '/flush-cache') {
+    // recreate the cache
+    cache = createCache();
+  }
+});
+```
+
 ## API
 
 ### enstore()
