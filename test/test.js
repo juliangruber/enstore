@@ -1,6 +1,6 @@
 var enstore = require('..');
 var through = require('through');
-var test = require('tap').test;
+var test = require('tape');
 
 test('enstore', function (t) {
   t.plan(12);

@@ -9,14 +9,14 @@
   "homepage": "https://github.com/juliangruber/enstore",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*.js"
+    "test": "tape test/*.js"
   },
   "dependencies": {
     "through": "~2.2.7",
     "monotonic-timestamp": "0.0.8"
   },
   "devDependencies": {
-    "tap": "*"
+    "tape": "~0.3.3"
   },
   "keywords": [
     "stream",
