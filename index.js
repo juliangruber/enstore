@@ -41,13 +41,15 @@ enstore.prototype.createReadStream = function () {
   var lastChunkAt = null;
 
   var tr = through();
-  var end = tr.end.bind(tr);
+  var end = function () { tr.end() };
   function write (chunk) {
     tr.write(chunk.chunk);
   }
   
   setTimeout(function () {
-    self.store.forEach(write);
+    for (var i = 0; i < self.store.length; i++) {
+      write(self.store[i]);
+    }
     self.on('chunk', write);
     self.once('end', end);
     if (self.ended) tr.end();
