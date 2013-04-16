@@ -5,6 +5,8 @@ In-memory persistence for streams. Enables you to replay streams, even if they'r
 *Need real persistence? Check out [level-store](https://github.com/juliangruber/level-store) for a fast and flexible
 streaming storage engine based on LevelDB.*
 
+[![browser support](https://ci.testling.com/juliangruber/enstore.png)](https://ci.testling.com/juliangruber/enstore)
+
 ## Usage
 
 ```js
@@ -68,6 +70,8 @@ With [npm](http://npmjs.org) do
 ```bash
 $ npm install enstore
 ```
+
+For the client, bundle with [browserify](https://github.com/substack/node-browserify).
 
 ## License
 
