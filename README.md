@@ -20,7 +20,7 @@ someStream.pipe(store.createWriteStream());
 
 // pipe everything someStream emitted to someWhereElse
 // doesn't matter if someStream already finished
-store.createWriteStream().pipe(someWhereElse);
+store.createReadStream().pipe(someWhereElse);
 ```
 
 ## Example: Cache for browserify
