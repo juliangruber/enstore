@@ -5,6 +5,8 @@ In-memory persistence for streams. Enables you to replay streams, even if they'r
 *Need real persistence? Check out [level-store](https://github.com/juliangruber/level-store) for a fast and flexible
 streaming storage engine based on LevelDB.*
 
+[![downloads](https://img.shields.io/npm/dm/enstore.svg)](https://www.npmjs.org/package/enstore)
+
 [![browser support](https://ci.testling.com/juliangruber/enstore.png)](https://ci.testling.com/juliangruber/enstore)
 
 ## Usage
