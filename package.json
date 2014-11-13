@@ -12,10 +12,10 @@
     "test": "tape test/*.js"
   },
   "dependencies": {
-    "through": "~2.2.7",
     "monotonic-timestamp": "0.0.8"
   },
   "devDependencies": {
+    "concat-stream": "^1.4.6",
     "tape": "~0.3.3"
   },
   "keywords": [

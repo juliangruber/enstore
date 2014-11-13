@@ -1,8 +1,9 @@
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
-var through = require('through');
 var timestamp = require('monotonic-timestamp');
+var through = require('through');
 var Writable = require('stream').Writable;
+var Readable = require('stream').Readable;
 
 module.exports = enstore;
 
@@ -36,29 +37,26 @@ enstore.prototype.createWriteStream = function (opts) {
   return w;
 }
 
-enstore.prototype.createReadStream = function () {
+enstore.prototype.createReadStream = function (opts) {
   var self = this;
-  var lastChunkAt = null;
+  var idx = 0;
+  var r = Readable(opts);
+  r._read = function(n){
+    if (self.store[idx]) return r.push(self.store[idx++].chunk);
+    if (self.ended) return r.push(null);
 
-  var tr = through();
-  var end = function () { tr.end() };
-  function write (chunk) {
-    tr.write(chunk.chunk);
-  }
-  
-  setTimeout(function () {
-    for (var i = 0; i < self.store.length; i++) {
-      write(self.store[i]);
+    var onchunk = function(chunk){
+      self.removeListener('end', onend);
+      idx++;
+      r.push(chunk.chunk);
     }
-    self.on('chunk', write);
-    self.once('end', end);
-    if (self.ended) tr.end();
-  });
+    self.once('chunk', onchunk);
 
-  tr.once('end', function () {
-    self.removeListener('chunk', write);
-    self.removeListener('end', end);
-  })
-
-  return tr;
+    var onend = function(){
+      self.removeListener('chunk', onchunk);
+      r.push(null);
+    };
+    self.once('end', onend);
+  };
+  return r;
 }
