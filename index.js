@@ -1,7 +1,6 @@
 var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 var timestamp = require('monotonic-timestamp');
-var through = require('through');
 var Writable = require('stream').Writable;
 var Readable = require('stream').Readable;
 
