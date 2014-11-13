@@ -1,6 +1,6 @@
 
 test:
-	@node_modules/.bin/tape test/*.js
+	@node_modules/.bin/tape test.js
 
 .PHONY: test
 

@@ -1,4 +1,4 @@
-var enstore = require('..');
+var enstore = require('./');
 var through = require('through');
 var test = require('tape');
 var PassThrough = require('stream').PassThrough;
