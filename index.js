@@ -5,20 +5,17 @@ var through = require('through');
 var Writable = require('stream').Writable;
 var Readable = require('stream').Readable;
 
-module.exports = enstore;
+module.exports = Store;
+inherits(Store, EventEmitter);
 
-function enstore () {
-  if (!(this instanceof enstore)) return new enstore();
-
+function Store(){
+  if (!(this instanceof Store)) return new Store();
   EventEmitter.call(this);
-
   this.store = [];
   this.ended = false;
 }
 
-inherits(enstore, EventEmitter);
-
-enstore.prototype.createWriteStream = function (opts) {
+Store.prototype.createWriteStream = function(opts){
   var self = this;
   var w = Writable(opts);
   w._write = function(chunk, _, done){
@@ -35,9 +32,9 @@ enstore.prototype.createWriteStream = function (opts) {
     self.emit('end');
   });
   return w;
-}
+};
 
-enstore.prototype.createReadStream = function (opts) {
+Store.prototype.createReadStream = function(opts){
   var self = this;
   var idx = 0;
   var r = Readable(opts);
@@ -59,4 +56,4 @@ enstore.prototype.createReadStream = function (opts) {
     self.once('end', onend);
   };
   return r;
-}
+};
