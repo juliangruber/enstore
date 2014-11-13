@@ -9,7 +9,7 @@ test('enstore', function (t) {
   read('initial');
 
   var src = through();
-  src.pipe(store.createWriteStream());
+  src.pipe(store.createWriteStream({ objectMode: true }));
 
   var i = 0;
   (function write () {

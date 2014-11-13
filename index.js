@@ -2,6 +2,7 @@ var EventEmitter = require('events').EventEmitter;
 var inherits = require('util').inherits;
 var through = require('through');
 var timestamp = require('monotonic-timestamp');
+var Writable = require('stream').Writable;
 
 module.exports = enstore;
 
@@ -16,24 +17,23 @@ function enstore () {
 
 inherits(enstore, EventEmitter);
 
-enstore.prototype.createWriteStream = function () {
+enstore.prototype.createWriteStream = function (opts) {
   var self = this;
-
-  return through(write, end);
-
-  function write (chunk) {
+  var w = Writable(opts);
+  w._write = function(chunk, _, done){
     chunk = {
       ts : timestamp(),
       chunk : chunk
     }
     self.store.push(chunk);
     self.emit('chunk', chunk);
-  }
-
-  function end () {
+    done();
+  };
+  w.on('finish', function(){
     self.ended = true;
     self.emit('end');
-  }
+  });
+  return w;
 }
 
 enstore.prototype.createReadStream = function () {
