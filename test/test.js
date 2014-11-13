@@ -1,41 +1,37 @@
 var enstore = require('..');
 var through = require('through');
 var test = require('tape');
+var PassThrough = require('stream').PassThrough;
+var concat = require('concat-stream');
 
-test('enstore', function (t) {
-  t.plan(12);
+test('enstore', function(t){
+  t.plan(3);
 
   var store = enstore();
-  read('initial');
 
-  var src = through();
-  src.pipe(store.createWriteStream({ objectMode: true }));
+  store.createReadStream().pipe(concat(function(res){
+    t.equal(res.toString(), 'foobarbaz', 'before');
+  }));
 
-  var i = 0;
-  (function write () {
-    src.write(i++);
+  setTimeout(function(){
+    var w = store.createWriteStream();
+    var p = PassThrough();
+    p.pipe(w);
+    p.push('foo');
+    p.push('bar');
 
-    if (i == 2) {
-      read('streaming');
-    }
-    
-    if (i == 3) {
-      src.end();
-      return read('after');
-    }
-
-    setTimeout(write, 1);
-  })();
-
-  function read (name) {
-    var i = 0;
-    var rs = store.createReadStream();
-    rs.on('end', function () {
-      t.ok(true, name + ' ended');
-    });
-    rs.pipe(through(function (chunk) {
-      t.equal(chunk, i++, name + ' chunk');
+    store.createReadStream().pipe(concat(function(res){
+      t.equal(res.toString(), 'foobarbaz', 'in between');
     }));
-  }
+
+    setTimeout(function(){
+      p.push('baz');
+      p.push(null);
+
+      store.createReadStream().pipe(concat(function(res){
+        t.equal(res.toString(), 'foobarbaz', 'after');
+      }));
+    });
+  });
 });
 
