@@ -54,14 +54,14 @@ To recreate / flush the cache just overwrite the `cache` variable with a new `en
 
 Returns a new store.
 
-### enstore#createWriteStream()
+### enstore#createWriteStream(opts)
 
-Writable stream that stores written data in the internal store.
+Writable stream that stores written data in the internal store. `opts` will be passed to the `Writable()` constructor.
 
 ### enstore#createReadStream()
 
 Readable stream that emits both what is already stored and what comes in over
-`createWriteStream()` until `end` is emitted.
+`createWriteStream()` until `end` is emitted. `opts` will be passed to the `Readable()` constructor.
 
 ## Installation
 
