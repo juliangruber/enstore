@@ -15,7 +15,7 @@
     "monotonic-timestamp": "0.0.9"
   },
   "devDependencies": {
-    "concat-stream": "^1.4.6",
+    "concat-stream": "^1.6.0",
     "tape": "~4.6.2"
   },
   "keywords": [
